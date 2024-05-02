@@ -1,0 +1,51 @@
+import React, { FC, useEffect, useState } from 'react';
+import product, {IProduct} from "../product/Product";
+import Product from "../product/Product";
+
+const Products: FC = () => {
+    const [products, setProducts] = useState([]);
+    useEffect(() => {
+        fetch('https://dummyjson.com/products')
+            .then(res => res.json())
+            .then(response => {
+                setProducts(response.products);
+            })
+    }, []);
+    console.log(products);
+    return (
+        <div>
+            {
+                products.map(({
+                                  id,
+                                  title,
+                                  description,
+                                  price,
+                                  discountPercentage,
+                                  rating,
+                                  stock,
+                                  brand,
+                                  category,
+                                  thumbnail,
+                                  images
+                              }: IProduct) => {
+                    return <Product
+                        key={id}
+                        id={id}
+                        title={title}
+                        description={description}
+                        price={price}
+                        discountPercentage={discountPercentage}
+                        rating={rating}
+                        stock={stock}
+                        brand={brand}
+                        category={category}
+                        thumbnail={thumbnail}
+                        images={images}
+                    />
+                })
+            }
+        </div>
+    );
+};
+
+export default Products;
