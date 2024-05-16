@@ -1,34 +1,24 @@
 import React, {FC, FormEvent, useState} from 'react';
+import {useForm} from "react-hook-form";
 
-const FormComponent:FC = () => {
+const FormComponent: FC = () => {
     interface IFormProps {
         username: string;
         password: string;
+        age: number;
     }
 
-    const [formState, setFormState] = useState<IFormProps>(
-        {
-            username: '',
-            password: ''
-        });
 
-    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log(formState);
-    };
-    const handlePasswordChange = (e:FormEvent<HTMLInputElement>) => {
-        const formInput = e.target as HTMLInputElement;
-        setFormState({...formState, password: formInput.value});
-    };
-    const handleUsernameChange = (e:FormEvent<HTMLInputElement>) => {
-        const formInput = e.target as HTMLInputElement;
-        setFormState({...formState, username: formInput.value});
-    };
+    const {handleSubmit, register} = useForm<IFormProps>()
+
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name={'username'} value={formState.username} onChange={handleUsernameChange}/>
-                <input type="text" name={'password'} value={formState.password} onChange={handlePasswordChange}/>
+            <form onSubmit={handleSubmit((formDataProps)=>{
+                console.log(formDataProps);
+            })}>
+                <input type="text" {...register('username')}/>
+                <input type="text" {...register('password')}/>
+                <input type="number"  {...register('age')}/>
                 <button>Send</button>
             </form>
         </>
